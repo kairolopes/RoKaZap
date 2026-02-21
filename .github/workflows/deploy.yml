@@ -1,0 +1,40 @@
+name: Deploy (Firebase)
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: "Environment (dev|staging|prod)"
+        required: true
+        default: "dev"
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Install Firebase CLI
+        run: npm i -g firebase-tools
+      - name: Build frontend
+        run: |
+          cd frontend
+          npm ci
+          npm run build
+      - name: Firebase Target Select
+        run: echo "Selected environment: ${{ github.event.inputs.environment }}"
+      - name: Deploy Hosting
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+        run: firebase deploy --only hosting:frontend --token "$FIREBASE_TOKEN"
+      - name: Deploy Functions
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+        run: |
+          cd functions
+          npm ci
+          npm run build
+          firebase deploy --only functions --token "$FIREBASE_TOKEN"
+

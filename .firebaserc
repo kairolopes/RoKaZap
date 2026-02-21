@@ -1,0 +1,14 @@
+{
+  "projects": {
+    "default": "SEU_PROJETO_FIREBASE"
+  },
+  "targets": {
+    "SEU_PROJETO_FIREBASE": {
+      "hosting": {
+        "frontend": [
+          "frontend"
+        ]
+      }
+    }
+  }
+}

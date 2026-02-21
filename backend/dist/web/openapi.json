@@ -1,0 +1,177 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "RoKa Zap API",
+        "version": "0.1.0",
+        "description": "API de comunicação inspirada na Z-API"
+    },
+    "servers": [
+        {
+            "url": "https://api.exemplo.com/api/v1"
+        }
+    ],
+    "paths": {
+        "/auth/token": {
+            "post": {
+                "summary": "Gera token JWT para acesso à API",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "tenantId": {
+                                        "type": "string"
+                                    },
+                                    "userId": {
+                                        "type": "string"
+                                    },
+                                    "roles": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "required": ["tenantId", "userId"]
+                            },
+                            "examples": {
+                                "default": {
+                                    "value": {
+                                        "tenantId": "tenant-123",
+                                        "userId": "user-abc",
+                                        "roles": ["admin"]
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Token gerado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "token": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/messages/send": {
+            "post": {
+                "summary": "Enfileira envio de mensagem de texto",
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "phone": {
+                                        "type": "string"
+                                    },
+                                    "message": {
+                                        "type": "string"
+                                    }
+                                },
+                                "required": ["phone", "message"]
+                            },
+                            "examples": {
+                                "default": {
+                                    "value": {
+                                        "phone": "5511999999999",
+                                        "message": "Olá, tudo bem?"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "202": {
+                        "description": "Mensagem enfileirada"
+                    }
+                }
+            }
+        },
+        "/notify-purchase": {
+            "post": {
+                "summary": "Notifica compra de peça",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "cliente": {
+                                        "type": "string"
+                                    },
+                                    "telefone": {
+                                        "type": "string"
+                                    },
+                                    "mensagem": {
+                                        "type": "string"
+                                    },
+                                    "pecaId": {
+                                        "type": "string"
+                                    },
+                                    "valor": {
+                                        "type": "number"
+                                    }
+                                },
+                                "required": [
+                                    "cliente",
+                                    "telefone",
+                                    "mensagem",
+                                    "pecaId",
+                                    "valor"
+                                ]
+                            },
+                            "examples": {
+                                "default": {
+                                    "value": {
+                                        "cliente": "João da Silva",
+                                        "telefone": "+55 11 99999-9999",
+                                        "mensagem": "Obrigado pela compra",
+                                        "pecaId": "P123",
+                                        "valor": 199.9
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "202": {
+                        "description": "Mensagem enfileirada"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "scheme": "bearer",
+                "bearerFormat": "JWT"
+            }
+        }
+    }
+}
