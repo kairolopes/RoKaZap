@@ -1,0 +1,31 @@
+{
+  "$schema": "https://schema.railpack.com",
+  "provider": "node",
+  "steps": {
+    "install": {
+      "commands": [
+        {
+          "cmd": "cd backend && npm install",
+          "customName": "Install backend dependencies"
+        }
+      ]
+    },
+    "build": {
+      "inputs": [
+        {
+          "step": "install"
+        }
+      ],
+      "commands": [
+        {
+          "cmd": "cd backend && npm run build",
+          "customName": "Build backend"
+        }
+      ]
+    }
+  },
+  "deploy": {
+    "startCommand": "node backend/dist/index.js"
+  }
+}
+
