@@ -8,8 +8,8 @@
     "install": {
       "commands": [
         {
-          "cmd": "npm install",
-          "customName": "Install backend dependencies"
+          "cmd": "/bin/sh -lc 'if [ -f backend/package.json ]; then npm ci --prefix backend; elif [ -f package.json ]; then npm ci; else echo \"package.json not found\"; exit 1; fi'",
+          "customName": "Install dependencies (auto-detect root/backend)"
         }
       ]
     },
@@ -21,13 +21,13 @@
       ],
       "commands": [
         {
-          "cmd": "npm run build",
-          "customName": "Build backend"
+          "cmd": "/bin/sh -lc 'if [ -f backend/package.json ]; then npm run build --prefix backend; elif [ -f package.json ]; then npm run build; else echo \"package.json not found\"; exit 1; fi'",
+          "customName": "Build app (auto-detect root/backend)"
         }
       ]
     }
   },
   "deploy": {
-    "startCommand": "npm run start"
+    "startCommand": "/bin/sh -lc 'if [ -f backend/package.json ]; then npm run start --prefix backend; elif [ -f package.json ]; then npm run start; else echo \"package.json not found\"; exit 1; fi'"
   }
 }
