@@ -5,8 +5,8 @@
     "install": {
       "commands": [
         {
-          "cmd": "cd backend && npm install",
-          "customName": "Install backend dependencies"
+          "cmd": "npm install --prefix backend",
+          "customName": "Install backend dependencies (backend/)"
         }
       ]
     },
@@ -18,8 +18,8 @@
       ],
       "commands": [
         {
-          "cmd": "cd backend && npm run build",
-          "customName": "Build backend"
+          "cmd": "npm run build --prefix backend",
+          "customName": "Build backend (backend/)"
         }
       ]
     }
@@ -28,4 +28,3 @@
     "startCommand": "node backend/dist/index.js"
   }
 }
-
