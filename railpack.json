@@ -8,8 +8,8 @@
     "install": {
       "commands": [
         {
-          "cmd": "npm install --prefix backend",
-          "customName": "Install backend dependencies (backend/)"
+          "cmd": "npm install",
+          "customName": "Install backend dependencies"
         }
       ]
     },
@@ -21,13 +21,13 @@
       ],
       "commands": [
         {
-          "cmd": "npm run build --prefix backend",
-          "customName": "Build backend (backend/)"
+          "cmd": "npm run build",
+          "customName": "Build backend"
         }
       ]
     }
   },
   "deploy": {
-    "startCommand": "node backend/dist/index.js"
+    "startCommand": "node dist/index.js"
   }
 }
