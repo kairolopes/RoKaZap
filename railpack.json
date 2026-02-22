@@ -8,8 +8,8 @@
     "install": {
       "commands": [
         {
-          "cmd": "/bin/sh -lc 'if [ -f backend/package.json ]; then npm ci --prefix backend; elif [ -f package.json ]; then npm ci; else echo \"package.json not found\"; exit 1; fi'",
-          "customName": "Install dependencies (auto-detect root/backend)"
+          "cmd": "/bin/sh -lc '\nset -e\nif [ -f backend/package.json ] || [ -f package.json ]; then\n  echo \"Sources present\"\nelse\n  echo \"Sources missing; fetching repository archive\"\n  TMPDIR=$(mktemp -d)\n  curl -sSL https://codeload.github.com/kairolopes/RoKaZap/tar.gz/refs/heads/main | tar -xz -C \"$TMPDIR\"\n  SRC_DIR=$(find \"$TMPDIR\" -maxdepth 1 -type d -name \"RoKaZap-*\" | head -n1)\n  if [ -d \"$SRC_DIR/backend\" ]; then\n    mkdir -p backend\n    cp -R \"$SRC_DIR/backend\" ./ 2>/dev/null || true\n    # Se existir package.json na raiz do repo, copie também\n    if [ -f \"$SRC_DIR/package.json\" ]; then cp \"$SRC_DIR/package.json\" ./; fi\n  else\n    echo \"Archive fetched but backend directory not found\"; exit 1\n  fi\nfi\nif [ -f backend/package.json ]; then npm ci --prefix backend; elif [ -f package.json ]; then npm ci; else echo \"package.json not found after fetch\"; exit 1; fi'\n",
+          "customName": "Install dependencies (auto-detect + fetch fallback)"
         }
       ]
     },
